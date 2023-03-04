@@ -14,29 +14,32 @@ use bb8_postgres::PostgresConnectionManager;
 use std::net::SocketAddr;
 use tokio_postgres::NoTls;
 use tracing::Level;
-use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
+
+use clap::{Parser};
+use crate::sgba::cfg::SgbaDataArgs;
 
 #[tokio::main]
 async fn main() {
 
+    let args = SgbaDataArgs::parse();
+    let level_login = if args.debug {
+        Level::DEBUG
+    } else {
+        Level::INFO
+    };
+
     tracing_subscriber::fmt()
         .with_level(true)
         .with_target(true)
-        .with_max_level(Level::DEBUG)
+        .with_max_level(level_login)
         .compact()
         .init();
 
-    // tracing_subscriber::registry()
-    //     .with(
-    //         tracing_subscriber::EnvFilter::try_from_default_env()
-    //             .unwrap_or_else(|_| "example_tokio_postgres=debug".into()),
-    //     )
-    //     .with(tracing_subscriber::fmt::layer())
-    //     .init();
+
 
     // set up connection pool
     let manager =
-        PostgresConnectionManager::new_from_stringlike("host=localhost user=postgres password=test", NoTls)
+        PostgresConnectionManager::new_from_stringlike(format!("host=localhost user={} password={}",args.user_db,args.passwd_db).to_owned(), NoTls)
             .unwrap();
     let pool = Pool::builder().build(manager).await.unwrap();
 
@@ -49,7 +52,7 @@ async fn main() {
         .with_state(pool);
 
     // run it with hyper
-    let addr = SocketAddr::from(([127, 0, 0, 1], 3000));
+    let addr = SocketAddr::from(([127, 0, 0, 1], args.sport));
     tracing::debug!("listening on {}", addr);
     axum::Server::bind(&addr)
         .serve(app.into_make_service())

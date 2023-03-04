@@ -17,3 +17,4 @@ tokio = { version = "1.26.0", features = ["full"] }
 tokio-postgres = "0.7.7"
 tracing = "0.1.37"
 tracing-subscriber = { version = "0.3.16", feature = ["env-filter"] }
+clap = { version = "4.1.8", features = ["derive"] }
