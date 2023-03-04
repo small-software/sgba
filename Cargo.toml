@@ -1,0 +1,13 @@
+[package]
+name = "sgba"
+version = "0.1.0"
+author = ["Grzesiek grzesiek.bylica@gmail.com"]
+edition = "2021"
+license = "MIT OR Apache-2.0"
+description = "Initial project (API, postgresql, migration, JWT, configuration) using axum 0.6"
+
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+axum = "0.6.10"
