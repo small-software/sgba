@@ -11,3 +11,9 @@ description = "Initial project (API, postgresql, migration, JWT, configuration) 
 
 [dependencies]
 axum = "0.6.10"
+bb8 = "0.8.0"
+bb8-postgres = "0.8.1"
+tokio = { version = "1.26.0", features = ["full"] }
+tokio-postgres = "0.7.7"
+tracing = "0.1.37"
+tracing-subscriber = { version = "0.3.16", feature = ["env-filter"] }

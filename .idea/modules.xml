@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/sgb_init_prj_axum.iml" filepath="$PROJECT_DIR$/.idea/sgb_init_prj_axum.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/sgba.iml" filepath="$PROJECT_DIR$/.idea/sgba.iml" />
     </modules>
   </component>
 </project>
