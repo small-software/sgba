@@ -1,0 +1,1 @@
+sudo -u postgres psql sgba -f ./migration/migr_0.1.0.sql
