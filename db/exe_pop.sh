@@ -1,0 +1,1 @@
+sudo -u postgres psql sgba -f ./populating/test_data.sql
