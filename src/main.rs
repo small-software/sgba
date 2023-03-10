@@ -2,7 +2,7 @@ mod sgba;
 mod test;
 
 use axum::{
-    routing::get,
+    routing::{get,post},
     Router,
 };
 
@@ -14,6 +14,7 @@ use tracing::Level;
 
 use clap::{Parser};
 use crate::sgba::cfg::SgbaDataArgs;
+use sgba::api::data::users::controller::*;
 
 #[tokio::main]
 async fn main() {
@@ -38,15 +39,13 @@ async fn main() {
             .unwrap();
     let pool = Pool::builder().build(manager).await.unwrap();
 
+    let v_api = "v1";
+
     // build our application with some routes
     let app = Router::new()
-        .route(
-            "/",
-            get(sgba::api::data::users::controller::using_connection_pool_extractor).post(sgba::api::data::users::controller::using_connection_extractor),
-
-        ).route(
-        "/users", get(sgba::api::data::users::controller::users),
-    )
+        .route(&format!("/{}/users",v_api), get(get_users))
+        .route(&format!("/{}/sing_up",v_api), post(sing_up))
+        .route( &format!("/{}/sing_in",v_api), post(sing_in))
         .with_state(pool);
 
     // run it with hyper
