@@ -1,1 +1,1 @@
-insert into users( name, mail, passwd ) values ( 'grzes byl', 'mail@test.pl', '####' );
+insert into users( name, email, passwd ) values ( 'grzes byl', 'mail@test.pl', '####' );

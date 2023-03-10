@@ -1,0 +1,155 @@
+openapi: 3.0.2
+info:
+  title: sgba
+  description: Specification for repeating (boilerplate) code for a backend program.
+  termsOfService: https://small-software.com
+  contact:
+    name: Grzesiek Bylica
+    url: https://small-software.github.com
+    email: grzegorz.bylica@gmail.com
+  license:
+    name: MIT & Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: "1.0"
+servers:
+- url: http://127.0.0.1:3000
+#  description: Development Server
+#- url: https://???.com
+#  description: QA Server
+#- url: https://???.com
+#  description: Production Server
+paths:
+  /v1/users:
+    get:
+      summary: List users
+      description: Get a list of users in the system
+      responses:
+        200:
+          description: List of Users
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPagedList'
+  /v1/sing_up:
+    post:
+      summary: Sing up
+      description: Sing up - Create user
+      requestBody: 
+        content: 
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/SingUp'
+      responses:
+        200:
+          description: New user is created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ok'
+  /v1/sing_in:
+    post:
+      summary: Sing in
+      description: Sing in
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SingIn'
+      responses:
+        200:
+          description: New user is exist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ok'
+  # TODO
+  /v1/users/{userId}:
+    get:
+      summary: Get User By ID
+      description: Get a single **User** by its Id value.
+      parameters:
+      - name: userId
+        in: path
+        description: User Id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses:
+        200:
+          description: Found User
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          maxLength: 100
+          minLength: 2
+          type: string
+          example: Grzes Byl
+        email:
+          maxLength: 254
+          minLength: 2
+          type: string
+          example: grzegorz.bylica@gmail.com
+        created_at:
+          type: string
+        updated_at:
+          type: string
+      description: user object
+    SingUp:
+        type: object
+        properties:
+          name:
+            maxLength: 100
+            minLength: 2
+            type: string
+            example: Grzes Byl
+          email:
+            maxLength: 254
+            minLength: 2
+            type: string
+            example: grzegorz.bylica@gmail.com
+          passwd:
+            maxLength: 128
+            example: test
+        description: new user object
+    SingIn:
+      type: object
+      properties:
+        email:
+          maxLength: 254
+          minLength: 2
+          type: string
+          example: grzegorz.bylica@gmail.com
+        passwd:
+          maxLength: 128
+          example: test
+      description: Authorized
+    Ok:
+      type: object
+      properties:
+        res:
+          type: boolean
+          example: true
+      description: new object created
+    UserList:
+      maxItems: 100
+      minItems: 1
+      type: array
+      description: List of Users
+      items:
+        $ref: '#/components/schemas/User'
+    UserPagedList:
+      type: object
+      properties:
+        content:
+          $ref: '#/components/schemas/UserList'
