@@ -19,6 +19,7 @@ pub async fn get(
     Ok(res)
 }
 
+
 pub async fn create(
     conn: &PooledConnection<'_, PostgresConnectionManager<NoTls>>,
     sing_up: SingUp,
@@ -51,10 +52,11 @@ pub async fn create(
 pub async fn check(
     conn: &PooledConnection<'_, PostgresConnectionManager<NoTls>>,
     sing_in: SingIn,
-) -> Result<bool, Error> {
+) -> Result<i32, Error> {
     let res = conn
         .query_one(
             "SELECT \
+                        id,
                         name \
                        FROM \
                         users \
@@ -68,7 +70,7 @@ pub async fn check(
         .await
         .unwrap();
 
-    Ok(res.len() > 0)
+    Ok(res.get("id"))
 }
 
 async fn check_email_exist(

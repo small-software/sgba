@@ -13,7 +13,7 @@ use tokio_postgres::NoTls;
 use tracing::Level;
 
 use clap::{Parser};
-use crate::sgba::cfg::SgbaDataArgs;
+use crate::sgba::cfg::{get_jwt_secret, set_jwt_secret, SgbaDataArgs};
 use sgba::api::data::users::controller::*;
 
 #[tokio::main]
@@ -26,12 +26,17 @@ async fn main() {
         Level::INFO
     };
 
+
     tracing_subscriber::fmt()
         .with_level(true)
         .with_target(true)
         .with_max_level(level_login)
         .compact()
         .init();
+
+
+    set_jwt_secret(args.jwt_secret);
+    tracing::info!("jwt secret {}", get_jwt_secret());
 
     // set up connection pool
     let manager =

@@ -1,5 +1,9 @@
-
+use std::sync::Mutex;
 use clap::{Parser};
+use once_cell::sync::OnceCell;
+
+
+static JWT_SECRET: OnceCell<Mutex<String>> = OnceCell::new();
 
 #[derive(Parser)]
 #[command(author, version)]
@@ -18,4 +22,20 @@ pub struct SgbaDataArgs{
     /// Enable log mode debug
     #[arg(short, long, default_value_t=false)]
     pub debug: bool,
+
+    #[arg(short, long, default_value = "test" )]
+    pub jwt_secret: String,
 }
+
+pub fn get_jwt_secret() -> String {
+    ensure_jwt_secret().lock().unwrap().clone()
+}
+
+pub fn set_jwt_secret(jwt_secret: String) {
+    *ensure_jwt_secret().lock().unwrap() = jwt_secret;
+}
+
+fn ensure_jwt_secret() -> &'static Mutex<String> {
+    JWT_SECRET.get_or_init(|| Mutex::new(String::new()))
+}
+

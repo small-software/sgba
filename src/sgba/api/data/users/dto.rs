@@ -29,6 +29,5 @@ fn validate_unique_name(name: &str) -> Result<(), ValidationError> {
     if name == "xx" {
         return Err(ValidationError::new("terrible_username"))
     }
-
     Ok(())
 }

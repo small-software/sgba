@@ -1,5 +1,5 @@
-use tokio_postgres::Row;
 use chrono::{DateTime, Utc};
+use tokio_postgres::Row;
 use serde::{Serialize, Deserialize};
 
 #[derive(Serialize, Deserialize)]
